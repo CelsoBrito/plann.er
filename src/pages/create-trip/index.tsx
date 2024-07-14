@@ -1,15 +1,15 @@
-import { ArrowRight, UserRoundPlus } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InviteGuestsModal } from './invite-guests-modal';
 import { ConfirmTripModal } from './confirm-trip-modal';
 import { DestinationAndDateStep } from './steps/destination-and-date-step';
+import { InviteGuestsStep } from './steps/invite-guests-step';
 
 export function CreateTripPage() {
   const navigate = useNavigate();
     
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
-  const [isGuestsModalOpan, setIsGuestsModalOpen] = useState(false);
+  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
 
   const [emailsToInvite, setEmailsToInvite] = useState([
@@ -44,12 +44,12 @@ export function CreateTripPage() {
   }
 
   function closeGuestsModal() {
+    
     setIsGuestsModalOpen(false);
   }
 
   function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log('submit');
     const data = new FormData(event.currentTarget);
     const email = data.get('email')?.toString();
 
@@ -97,11 +97,10 @@ export function CreateTripPage() {
           />
 
           {isGuestsInputOpen && (
-            <InviteGuestsModal
-                addNewEmailToInvite={addNewEmailToInvite}
-                closeGuestsModal={closeGuestsModal}
-                emailsToInvite={emailsToInvite}
-                removeEmailFromInvites={removeEmailFromInvites}
+            <InviteGuestsStep
+              emailsToInvite={emailsToInvite}
+              openConfirmTripModal={openCofirmTripModal}
+              openGuestsModal={openGuestsModal}
             />
           )}
         </div>
@@ -113,21 +112,21 @@ export function CreateTripPage() {
 
 
 
-      {isGuestsModalOpan && (
+      {isGuestsModalOpen && (
         <InviteGuestsModal
             emailsToInvite={emailsToInvite}
             addNewEmailToInvite={addNewEmailToInvite}
-            closeGuestsModal={closeCofirmTripModal}
+            closeGuestsModal={closeGuestsModal}
             removeEmailFromInvites={removeEmailFromInvites}
         />
       )}
 
-        {isConfirmTripModalOpen && (
-          <ConfirmTripModal
-            closeCofirmTripModal={closeCofirmTripModal}
-            createTrip={createTrip}
-          />
-        )}
+      {isConfirmTripModalOpen && (
+        <ConfirmTripModal
+          closeCofirmTripModal={closeCofirmTripModal}
+          createTrip={createTrip}
+        />
+      )}
 
     </div>
   )
