@@ -13,12 +13,10 @@ interface Participants {
 
 export function Guests() {
     const { tripId } = useParams();
-    const [participants, setParticipans] = useState<Participants[]>([])
+    const [participants, setParticipants] = useState<Participants[]>([])
 
     useEffect(() => {
-        api.get(`/trips/${tripId}/participants`).then((response: any) => setParticipans(response.data.participants))
-        console.log(participants);
-        
+        api.get(`/trips/${tripId}/participants`).then((response: any) => setParticipants(response.data.participants))
     }, [tripId])
 
     return (
